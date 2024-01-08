@@ -23,9 +23,8 @@ import NotFoundPage from './pages/NotFoundPage';
 function App() {
   useEffect(() => {
     // set the token on refreshing the website
-    axiosInstance.defaults.headers.common[
-      'Authorization'
-    ] = `Bearer ${getItemFromLocalStorage('token')}`;
+    axiosInstance.defaults.headers.common['Authorization'] =
+      `Bearer ${getItemFromLocalStorage('token')}`;
   }, []);
 
   return (
