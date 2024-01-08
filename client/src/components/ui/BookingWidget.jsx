@@ -89,13 +89,13 @@ const BookingWidget = ({ place }) => {
   return (
     <div className="rounded-2xl bg-white p-4 shadow-xl">
       <div className="text-center text-xl">
-        Price: <span className="font-semibold">₹{place.price}</span> / per night
+        Price: <span className="font-semibold">${place.price}</span> / per night
       </div>
       <div className="mt-4 rounded-2xl border">
         <div className="flex w-full ">
           <DatePickerWithRange setDateRange={setDateRange} />
         </div>
-        <div className="border-t py-3 px-4">
+        <div className="border-t px-4 py-3">
           <label>Number of guests: </label>
           <input
             type="number"
@@ -107,7 +107,7 @@ const BookingWidget = ({ place }) => {
             onChange={handleBookingData}
           />
         </div>
-        <div className="border-t py-3 px-4">
+        <div className="border-t px-4 py-3">
           <label>Your full name: </label>
           <input
             type="text"
@@ -126,7 +126,7 @@ const BookingWidget = ({ place }) => {
       </div>
       <button onClick={handleBooking} className="primary mt-4">
         Book this place
-        {numberOfNights > 0 && <span> ₹{numberOfNights * place.price}</span>}
+        {numberOfNights > 0 && <span> ${numberOfNights * place.price}</span>}
       </button>
     </div>
   );
