@@ -53,7 +53,7 @@ export const Header = () => {
           />
 
           <span className="hidden text-2xl font-bold text-red-500 md:block">
-            airbnb
+            Berkai
           </span>
         </a>
 
@@ -61,7 +61,7 @@ export const Header = () => {
 
         <Link
           to={user ? '/account' : '/login'}
-          className="w-50 flex h-full items-center gap-2 rounded-full border-gray-300 py-1 px-2 md:border"
+          className="w-50 flex h-full items-center gap-2 rounded-full border-gray-300 px-2 py-1 md:border"
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
