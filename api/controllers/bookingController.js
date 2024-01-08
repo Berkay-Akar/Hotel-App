@@ -1,4 +1,4 @@
-const Booking = require('../models/Booking');
+const Booking = require("../models/Booking");
 
 // Books a place
 exports.createBookings = async (req, res) => {
@@ -6,6 +6,24 @@ exports.createBookings = async (req, res) => {
     const userData = req.user;
     const { place, checkIn, checkOut, numOfGuests, name, phone, price } =
       req.body;
+    // check if user is logged in
+    if (!userData) {
+      throw new Error("You are not authorized to access this page!");
+    }
+    //check checkIn and checkOut dates
+    if (checkIn > checkOut) {
+      throw new Error("Check-in date must be before check-out date!");
+    }
+    //check if place is available
+    const bookings = await Booking.find({ place: place });
+    for (let i = 0; i < bookings.length; i++) {
+      if (
+        (checkIn >= bookings[i].checkIn && checkIn <= bookings[i].checkOut) ||
+        (checkOut >= bookings[i].checkIn && checkOut <= bookings[i].checkOut)
+      ) {
+        throw new Error("Place is not available!");
+      }
+    }
 
     const booking = await Booking.create({
       user: userData.id,
@@ -23,7 +41,7 @@ exports.createBookings = async (req, res) => {
     });
   } catch (err) {
     res.status(500).json({
-      message: 'Internal server error',
+      message: "Internal server error",
       error: err,
     });
   }
@@ -36,19 +54,16 @@ exports.getBookings = async (req, res) => {
     if (!userData) {
       return res
         .status(401)
-        .json({ error: 'You are not authorized to access this page!' });
+        .json({ error: "You are not authorized to access this page!" });
     }
 
-    const booking = await Booking.find({ user: userData.id }).populate('place')
+    const booking = await Booking.find({ user: userData.id }).populate("place");
 
-    res
-      .status(200).json({ booking, success: true })
-
-
+    res.status(200).json({ booking, success: true });
   } catch (err) {
     console.log(err);
     res.status(500).json({
-      message: 'Internal server error',
+      message: "Internal server error",
       error: err,
     });
   }
