@@ -77,7 +77,7 @@ const BookingWidget = ({ place }) => {
       setRedirect(`/account/bookings/${bookingId}`);
       toast('Congratulations! Enjoy your trip.');
     } catch (error) {
-      toast.error('Something went wrong!');
+      toast.error(error.response.data.message);
       console.log('Error: ', error);
     }
   };

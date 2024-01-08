@@ -14,6 +14,18 @@ exports.createBookings = async (req, res) => {
     if (checkIn > checkOut) {
       throw new Error("Check-in date must be before check-out date!");
     }
+    //check if checkIn and checkOut dates are in the past
+    if (checkIn < Date.now() || checkOut < Date.now()) {
+      throw new Error("Check-in and check-out dates must be in the future!");
+    }
+    //check if booking already exists
+    const existingBooking = await Booking.findOne({
+      user: userData.id,
+      place: place,
+    });
+    if (existingBooking) {
+      throw new Error("You have already booked this place!");
+    }
     //check if place is available
     const bookings = await Booking.find({ place: place });
     for (let i = 0; i < bookings.length; i++) {
@@ -40,8 +52,8 @@ exports.createBookings = async (req, res) => {
       booking,
     });
   } catch (err) {
-    res.status(500).json({
-      message: "Internal server error",
+    res.status(400).json({
+      message: err.message,
       error: err,
     });
   }
