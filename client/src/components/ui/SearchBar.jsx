@@ -35,7 +35,7 @@ const SearchBar = () => {
         <div className="grow">
           <input
             type="search"
-            placeholder="Where you want to go?"
+            placeholder="Enter City or Country Where You Want to Go"
             className="h-full w-full border-none px-4 py-2 text-sm  focus:outline-none md:text-lg"
             onChange={(e) => handleSearch(e)}
             value={searchText}
