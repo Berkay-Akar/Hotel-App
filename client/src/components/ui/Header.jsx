@@ -119,7 +119,7 @@ export const Header = () => {
             </div>
           </Link>
         </div>
-        {showSearchBar && <Search />}
+        {/* {showSearchBar && <Search />} */}
       </div>
       <br className="border border-gray-600" />
     </header>
