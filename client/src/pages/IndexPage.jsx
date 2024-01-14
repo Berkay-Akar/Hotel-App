@@ -11,7 +11,7 @@ const IndexPage = () => {
   }
 
   return (
-    <div className="grid grid-cols-1 justify-items-center px-4 py-32 md:grid-cols-2 md:gap-0 lg:grid-cols-3 lg:gap-2 xl:grid-cols-4 xl:gap-10">
+    <div className="grid grid-cols-1 justify-items-center px-4 py-8 md:grid-cols-2 md:gap-0 lg:grid-cols-3 lg:gap-2 xl:grid-cols-4 xl:gap-10">
       {places.length > 0 ? (
         places.map((place) => <PlaceCard place={place} key={place._id} />)
       ) : (

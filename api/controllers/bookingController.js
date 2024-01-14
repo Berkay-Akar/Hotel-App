@@ -18,6 +18,11 @@ exports.createBookings = async (req, res) => {
     if (checkIn < Date.now() || checkOut < Date.now()) {
       throw new Error("Check-in and check-out dates must be in the future!");
     }
+
+    if (checkIn === checkOut) {
+      throw new Error("Check-in and check-out dates cannot be the same!");
+    }
+
     //check if booking already exists
     const existingBooking = await Booking.findOne({
       user: userData.id,
