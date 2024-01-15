@@ -12,7 +12,6 @@ const {
 } = require("../controllers/placeController");
 
 router.route("/").get(getPlaces);
-
 // Protected routes (user must be logged in)
 router.route("/add-places").post(isLoggedIn, addPlace);
 router.route("/user-places").get(isLoggedIn, userPlaces);

@@ -108,11 +108,15 @@ exports.getPlaces = async (req, res) => {
 // Returns all the maxGuests in DB
 exports.getMaxGuests = async (req, res) => {
   try {
-    const maxGuests = await Place.find();
+    const maxGuests = await Place.find({
+      maxGuests: { $type: "string" },
+    }).distinct("maxGuests");
     res.status(200).json({
       maxGuests,
     });
+    console.log("maxGuests", maxGuests);
   } catch (err) {
+    console.error(err);
     res.status(500).json({
       message: "Internal server error",
     });
