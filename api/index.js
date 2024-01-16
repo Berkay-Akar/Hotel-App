@@ -5,6 +5,7 @@ const cors = require("cors");
 const connectWithDB = require("./config/db");
 const cookieSession = require("cookie-session");
 const cookieParser = require("cookie-parser");
+const Place = require("./models/Place");
 const cloudinary = require("cloudinary").v2;
 
 // connect with database

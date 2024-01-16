@@ -1,44 +1,57 @@
 import axiosInstance from '@/utils/axios';
-import axios from 'axios';
+import { usePlaces } from '../../../hooks';
 import React, { useEffect, useState } from 'react';
+import { set } from 'date-fns';
 
 function Search() {
-  const [destinations, setDestinations] = useState([]);
-  const [date, setDate] = useState('');
-  const [guestOptions, setGuestOptions] = useState([]);
+  const Places = usePlaces();
+  const { setPlaces, setLoading } = Places;
   const [destination, setDestination] = useState('');
+  const destinations = ['Istanbul', 'Ankara', 'Izmir'];
+  const guestOptions = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10'];
   const [guests, setGuests] = useState('');
-  const dates = ['1 Oca - 2 Oca', '3 Feb - 4 Feb', '5 Mar - 6 Mar']; // Replace with your date options
-
-  useEffect(async () => {
-    // Fetch destinations from the backend
-    await axiosInstance
-      .get('/getPlaces')
-      .then((response) => response.json())
-      .then((data) => setDestinations(data));
-
-    // Fetch guest options from the backend
-    await axiosInstance
-      .get('/getMaxGuests')
-      .then((response) => response.json())
-      .then((data) => setGuestOptions(data));
-  }, []);
+  const [searchText, setSearchText] = useState('');
+  const [searchTimeout, setSearchTimeout] = useState(null);
 
   const handleDestinationChange = (event) => {
     setDestination(event.target.value);
-  };
-
-  const handleDateChange = (event) => {
-    setDate(event.target.value);
   };
 
   const handleGuestsChange = (event) => {
     setGuests(event.target.value);
   };
 
-  const handleSearch = () => {
-    // Handle search logic with selected values
-    console.log('Search with:', destination, date, guests);
+  const handleSearch = async (e) => {
+    try {
+      clearTimeout(searchTimeout);
+      setSearchText(e.target.value);
+      // Make a GET request to the search endpoint with the selected parameters
+      const searchResponse = await axiosInstance.get('/places/search', {
+        params: {
+          address: destination.toLocaleLowerCase(),
+          maxGuests: guests,
+        },
+      });
+      setLoading(true);
+      setSearchTimeout(
+        setTimeout(async () => {
+          const { data } = await axiosInstance.get('/places/search', {
+            params: {
+              address: destination.toLocaleLowerCase(),
+              maxGuests: guests,
+            },
+          });
+          const searchResults = searchResponse.data.places;
+          setPlaces(searchResults);
+          setLoading(false);
+        }, 500),
+      );
+      // Handle the search results as needed, e.g., update state or perform actions
+
+      console.log('Search results:', searchResults);
+    } catch (error) {
+      console.error('Error during search:', error);
+    }
   };
 
   return (
@@ -54,21 +67,6 @@ function Search() {
             >
               <option value="">Varış noktası</option>
               {destinations.map((option) => (
-                <option key={option} value={option}>
-                  {option}
-                </option>
-              ))}
-            </select>
-          </div>
-          <div className="flex h-12 items-center rounded-lg border p-2">
-            <i className="fas fa-calendar-alt mr-2 text-gray-400"></i>
-            <select
-              value={date}
-              onChange={handleDateChange}
-              className="w-auto outline-none"
-            >
-              <option value="">Tarih aralığı</option>
-              {dates.map((option) => (
                 <option key={option} value={option}>
                   {option}
                 </option>

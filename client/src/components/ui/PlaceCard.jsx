@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom';
 const PlaceCard = ({ place }) => {
   const { user } = useContext(UserContext);
   const { _id: placeId, photos, address, title, price } = place;
-  let discountedPrice = price - (price * 20) / 100;
+  let discountedPrice = user && price - (price * 10) / 100;
   return (
     <Link to={`/place/${placeId}`} className="m-4 flex flex-col md:m-2 xl:m-0">
       <div className="card ">

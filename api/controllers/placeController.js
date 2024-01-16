@@ -162,3 +162,35 @@ exports.searchPlaces = async (req, res) => {
     });
   }
 };
+
+// search endpoint with address and maxGuests
+exports.search = async (req, res) => {
+  try {
+    const { address, maxGuests } = req.query;
+    console.log("address", address);
+    console.log("maxGuests", maxGuests);
+    // Convert maxGuests to a number
+    const maxGuestsNumber = parseInt(maxGuests, 10);
+
+    // Check if the conversion was successful
+    if (isNaN(maxGuestsNumber)) {
+      return res.status(400).json({
+        message: "maxGuests must be a valid number",
+      });
+    }
+
+    const places = await Place.find({
+      address: { $regex: address, $options: "i" },
+      maxGuests: { $gte: maxGuestsNumber }, // Use $gte (greater than or equal) for numeric comparison
+    });
+
+    res.status(200).json({
+      places,
+    });
+  } catch (err) {
+    console.log("ERRORRR", err);
+    res.status(500).json({
+      message: "Internal server error",
+    });
+  }
+};
