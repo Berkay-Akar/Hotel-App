@@ -42,7 +42,7 @@ app.use(express.json());
 // CORS
 app.use(
   cors({
-    origin: process.env.CLIENT_URL,
+    origin: process.env.CLIENT_URL || "https://berkay-akar-hotel.onrender.com",
     credentials: true,
   })
 );
