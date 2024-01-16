@@ -7,6 +7,7 @@ const cookieSession = require("cookie-session");
 const cookieParser = require("cookie-parser");
 const Place = require("./models/Place");
 const cloudinary = require("cloudinary").v2;
+const PORT = process.env.PORT || 8000;
 
 // connect with database
 connectWithDB();
@@ -45,7 +46,6 @@ app.use(
     credentials: true,
   })
 );
-
 // use express router
 app.use("/", require("./routes"));
 
