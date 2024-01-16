@@ -49,11 +49,11 @@ app.use(
 // use express router
 app.use("/", require("./routes"));
 
-app.listen(process.env.PORT || 8000, (err) => {
-  if (err) {
-    console.log("Error in connecting to server: ", err);
-  }
-  console.log(`Server is running on port no. ${process.env.PORT}`);
-});
+if (process.env.VERCEL == "1") {
+} else {
+  app.listen(PORT, () => {
+    console.log(`Server listening on port ${PORT}`);
+  });
+}
 
 module.exports = app;
